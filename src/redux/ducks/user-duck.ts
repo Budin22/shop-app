@@ -1,4 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { genSaltSync, hashSync, compareSync } from "bcrypt-ts";
+
 import { setLocalStorage } from "../../services/setLocalStorege";
 import {
   TInitialS,
@@ -42,7 +44,7 @@ export const {
     signInUser(state, action: PayloadAction<TSingInUser>) {
       const user = state.users.find(
         (item) =>
-          item.password === action.payload.password &&
+          compareSync(action.payload.password, item.password) &&
           item.email === action.payload.email
       );
       if (user !== undefined) {
@@ -58,6 +60,8 @@ export const {
       );
 
       if (user === undefined) {
+        const salt = genSaltSync(10);
+        action.payload.password = hashSync(action.payload.password, salt);
         state.users.push(action.payload);
         state.activeUser = action.payload;
         setLocalStorage(namespace, state);
