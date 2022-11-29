@@ -1,19 +1,11 @@
-import * as mongoose from "mongoose";
+import express from "express";
+import * as User from "../controllers/user.controller";
 
-interface IUser extends mongoose.Document {
-  email: String;
-  password: String;
-}
+const router = express.Router();
 
-const User = new mongoose.Schema<IUser>({
-  email: {
-    type: String,
-    required: true,
-  },
-  password: {
-    type: String,
-    required: true,
-  },
-});
+router.post("/login", User.login);
+router.post("/signup", User.signup);
+router.get("/info", User.info);
+router.get("/", User.all);
 
-export default mongoose.model<IUser>("users", User);
+export default router;

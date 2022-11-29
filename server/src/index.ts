@@ -1,12 +1,21 @@
-import express from 'express'
-import dotenv from 'dotenv'
+import mongoose from "mongoose";
+import app from "./app";
 
-dotenv.config({ path: ".env" })
-const app = express()
-
-app.use(express.json())
-
-
-app.listen(process.env.PORT, () => {
-    console.log(`Run port: ${process.env.PORT}`)
-})
+mongoose
+  .connect(process.env.MONGODB_URI as string)
+  .then(() => {
+    app.listen(app.get("port"), () => {
+      console.log(
+        "  App is running at http://localhost:%d in %s mode",
+        app.get("port"),
+        app.get("env")
+      );
+      console.log("  Press CTRL-C to stop\n");
+    });
+  })
+  .catch((err: Error) => {
+    console.log(
+      "MongoDB connection error. Please make sure MongoDB is running. " + err
+    );
+    process.exit(1);
+  });
