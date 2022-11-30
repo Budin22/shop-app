@@ -1,11 +1,10 @@
 import express from "express";
-import * as User from "../controllers/user.controller";
+import { info, all } from "../controllers/user.controller";
+import passport from "passport";
 
 const router = express.Router();
 
-router.post("/login", User.login);
-router.post("/signup", User.signup);
-router.get("/info", User.info);
-router.get("/", User.all);
+router.get("/info", passport.authenticate("jwt", { session: false }), info);
+router.get("/", passport.authenticate("jwt", { session: false }), all);
 
 export default router;

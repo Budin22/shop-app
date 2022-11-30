@@ -45,10 +45,10 @@ export const login = async (
         { email, id: user._id },
         process.env.JWT_SECRET as string,
         {
-          expiresIn: 360000,
+          expiresIn: 60 * 60,
         }
       );
-      return res.status(200).json({ email, token });
+      return res.status(200).json({ email, token: `Bearer ${token}` });
     }
   } catch (err) {
     console.log(err);
@@ -59,7 +59,7 @@ export const login = async (
 export const info = async (req: Request, res: Response, next: NextFunction) => {
   try {
     if (req.isAuthenticated()) {
-      return res.json({ msg: "I am in" });
+      return res.json({ msg: req.user });
     }
 
     res.json({ msg: "I am out" });

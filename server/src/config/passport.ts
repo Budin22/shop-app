@@ -1,43 +1,31 @@
 import passport from "passport";
-import passportLocal from "passport-local";
-import User, { TUser } from "../models/User";
-import bcrypt from "bcrypt";
+import passportJwt from "passport-jwt";
+import User from "../models/User";
 
-const LocalStrategy = passportLocal.Strategy;
+const JwtStrategy = passportJwt.Strategy;
+const ExtractJwt = passportJwt.ExtractJwt;
+
+const options = {
+  jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+  secretOrKey: "21d2fg1dfg1d1grr4utyiuty51ws3df4sd4gfsdf-sdfs5e5e",
+};
 
 const initialize = () => {
   passport.use(
-    new LocalStrategy(
-      { usernameField: "email" },
-      async (email, password, done) => {
-        try {
-          const user = await User.findOne({ email: email });
-          if (!user) {
-            return done(null, false, {
-              message: `Email ${email} not found`,
-            });
-          }
-          if (await bcrypt.compare(password, user.password)) {
-            return done(null, user);
-          }
-          return done(null, false, { message: "Invalid password" });
-        } catch (err) {
-          done(err);
+    new JwtStrategy(options, async (payload, done) => {
+      try {
+        const user = await User.findById(payload.id).select("email id");
+
+        if (user) {
+          return done(null, user);
+        } else {
+          done(null, false);
         }
+      } catch (err) {
+        done(err);
       }
-    )
+    })
   );
-
-  passport.serializeUser<any, any>((req, user, done) => {
-    done(null, user);
-  });
-
-  passport.deserializeUser((user: TUser, done) => {
-    const fetchUser = (id: string) => User.findById(id);
-    fetchUser(user._id).then((user) => {
-      return done(null, user);
-    });
-  });
 };
 
 export default initialize;
