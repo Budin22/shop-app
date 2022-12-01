@@ -1,84 +1,51 @@
-import { NextFunction, Request, Response } from "express";
-import JWT from "jsonwebtoken";
+import { Request, Response } from "express";
 import bcrypt from "bcrypt";
 
 import User from "../models/User";
+import { errorHandler } from "../utils/errorHandler";
 
-export const signup = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const info = async (req: Request, res: Response) => {
   try {
-    const { email, password } = req.body;
+    res.json({ msg: req.user });
+  } catch (err) {
+    errorHandler(res, err);
+  }
+};
 
-    const isUser = await User.findOne({ email });
-    if (isUser) {
-      return res.json({ msg: "Email is exist" });
-    }
+export const all = async (req: Request, res: Response) => {
+  try {
+    const allUsers = await User.find();
+    res.json({ users: allUsers });
+  } catch (err) {
+    errorHandler(res, err);
+  }
+};
+
+export const changePassword = async (req: Request, res: Response) => {
+  try {
+    const { password, id } = req.body;
 
     const hashPassword = await bcrypt.hash(password, 10);
 
-    const user = await User.create({ email, password: hashPassword });
-
-    res.status(200).json({ user });
+    const user = await User.findByIdAndUpdate(
+      id,
+      { password: hashPassword },
+      { new: true }
+    );
+    if (user) {
+      res.status(200).json({ user });
+    }
   } catch (err) {
-    res.status(420).json({ msg: err });
+    errorHandler(res, err);
   }
 };
 
-export const login = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const deleteUser = async (req: Request, res: Response) => {
   try {
-    const { email, password } = req.body;
-
-    const user = await User.findOne({ email });
-    if (!user) {
-      return res.status(401).json({ msg: "Email does not exist" });
-    }
-
-    if (await bcrypt.compare(password, user.password)) {
-      const token = JWT.sign(
-        { email, id: user._id },
-        process.env.JWT_SECRET as string,
-        {
-          expiresIn: 60 * 60,
-        }
-      );
-      return res.status(200).json({ email, token: `Bearer ${token}` });
-    }
+    const { id } = req.body;
+    const isDelete = await User.findByIdAndDelete(id);
+    res.json(isDelete);
   } catch (err) {
-    console.log(err);
-    next(err);
-  }
-};
-
-export const info = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    if (req.isAuthenticated()) {
-      return res.json({ msg: req.user });
-    }
-
-    res.json({ msg: "I am out" });
-  } catch (err) {
-    console.log(err);
-    next(err);
-  }
-};
-
-export const all = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    if (req.isAuthenticated()) {
-      const allUsers = await User.find();
-      return res.json({ users: allUsers });
-    }
-
-    res.json({ msg: "You need auth" });
-  } catch (err) {
-    console.log(err);
-    next(err);
+    errorHandler(res, err);
   }
 };
