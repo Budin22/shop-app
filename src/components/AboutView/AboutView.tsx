@@ -11,7 +11,7 @@ export const AboutView = () => {
             src="https://bcr.infuse.com"
             width="900"
             height="785"
-            title="Iframe Example"
+            title="Iframe"
         ></iframe>
     </Box>
   );
