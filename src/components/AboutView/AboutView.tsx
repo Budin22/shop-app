@@ -13,7 +13,7 @@ export const AboutView = () => {
             height="2000px"
             title="Iframe"
             frameBorder={0}
-            loading='lazy'
+            loading="lazy"
         ></iframe>
     </Box>
   );
