@@ -9,9 +9,11 @@ export const AboutView = () => {
       </Typography>
         <iframe
             src="https://bcr.infuse.com"
-            width="900"
-            height="785"
+            width="100%"
+            height="2000px"
             title="Iframe"
+            frameBorder={0}
+            loading='lazy'
         ></iframe>
     </Box>
   );
