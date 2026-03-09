@@ -113,8 +113,10 @@ export function Sharuk() {
         >
             {/* Header */}
             <Stack
+                width={'100%'}
                 flexDirection={"row"}
-                gap={{ xs: 4, md: 12 }}
+                flexWrap={'wrap'}
+                columnGap={{ xs: 4, md: 12 }}
                 alignItems={"center"}
                 justifyContent={"center"}
                 sx={{
