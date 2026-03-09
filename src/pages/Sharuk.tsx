@@ -102,7 +102,7 @@ export function Sharuk() {
 
     return (
         <Box
-            ref={containerRef}
+
             sx={{
                 backgroundColor: "#1c4d12",
                 width: "100%",
@@ -119,7 +119,7 @@ export function Sharuk() {
                 justifyContent={"center"}
                 sx={{
                     position: "absolute",
-                    top: 18,
+                    top: 6,
                     left: "50%",
                     transform: "translateX(-50%)",
                     zIndex: 10
@@ -150,6 +150,7 @@ export function Sharuk() {
 
             {/* Scene */}
             <Box
+                ref={containerRef}
                 sx={{
                     width: BASE_WIDTH,
                     height: BASE_HEIGHT,
