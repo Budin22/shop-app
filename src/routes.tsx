@@ -1,13 +1,13 @@
 import { RouteObject } from "react-router-dom";
-import { HomePage } from "./pages/HomePage";
-import { ProductsPage } from "./pages/ProductsPage";
-import { FormPage } from "./pages/FormPage";
-import { AboutPage } from "./pages/AboutPage";
-import { CartPage } from "./pages/CartPage";
-import { ProductPage } from "./pages/ProductPage";
-import { OrderPage } from "./pages/OrderPage";
-import { OrderComplete } from "./components/OrderView/OrderComplete";
-import { ProfilePage } from "./pages/ProfilePage";
+// import { HomePage } from "./pages/HomePage";
+// import { ProductsPage } from "./pages/ProductsPage";
+// import { FormPage } from "./pages/FormPage";
+// import { AboutPage } from "./pages/AboutPage";
+// import { CartPage } from "./pages/CartPage";
+// import { ProductPage } from "./pages/ProductPage";
+// import { OrderPage } from "./pages/OrderPage";
+// import { OrderComplete } from "./components/OrderView/OrderComplete";
+// import { ProfilePage } from "./pages/ProfilePage";
 import {Sharuk} from "./pages/Sharuk";
 
 export const routes: RouteObject[] = [
