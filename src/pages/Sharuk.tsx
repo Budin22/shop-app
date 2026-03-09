@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Box, Stack, Typography } from "@mui/material";
 
 type Balloon = {
@@ -11,6 +11,9 @@ type Balloon = {
     popped: boolean;
     value: string;
 };
+
+const BASE_WIDTH = 1200;
+const BASE_HEIGHT = 1000;
 
 const needleSVG = `
 <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
@@ -37,7 +40,9 @@ const needleSVG = `
 </svg>
 `;
 
-const needleCursor = `url("data:image/svg+xml,${encodeURIComponent(needleSVG)}") 6 6, pointer`;
+const needleCursor = `url("data:image/svg+xml,${encodeURIComponent(
+    needleSVG
+)}") 6 6, pointer`;
 
 const startPoint = { x: 600, y: 960 };
 
@@ -52,185 +57,113 @@ const heightMid = widthMid * 1.3;
 const widthBig = 180;
 const heightBig = widthBig * 1.3;
 
-const balloonList = [
-    {
-        id: 1,
-        x: 20,
-        y: 430,
-        width: widthMid,
-        height: heightMid,
-        color: colors[4],
-        popped: false,
-        value: "Who is a birthday boy/girl today?",
-    },
-    {
-        id: 2,
-        x: 100,
-        y: 160,
-        width: widthMid,
-        height: heightMid,
-        color: colors[0],
-        popped: false,
-        value: "Happy belated birthday!",
-    },
-    {
-        id: 3,
-        x: 230,
-        y: 620,
-        width,
-        height,
-        color: colors[3],
-        popped: false,
-        value: "Enjoy the ride!",
-    },
-    {
-        id: 4,
-        x: 290,
-        y: 340,
-        width: widthMid,
-        height: heightMid,
-        color: colors[1],
-        popped: false,
-        value: "Did you make a wish list?",
-    },
-    {
-        id: 5,
-        x: 430,
-        y: 110,
-        width: widthBig,
-        height: heightBig,
-        color: colors[3],
-        popped: false,
-        value: "What present did you like the most?",
-    },
-    {
-        id: 6,
-        x: 454,
-        y: 610,
-        width: width,
-        height: height,
-        color: colors[2],
-        popped: false,
-        value: "It’s your day to shine!",
-    },
-    {
-        id: 7,
-        x: 540,
-        y: 340,
-        width: widthBig,
-        height: heightBig,
-        color: colors[0],
-        popped: false,
-        value: "Did you throw a birthday party?",
-    },
-
-    {
-        id: 8,
-        x: 650,
-        y: 120,
-        width: widthBig,
-        height: heightBig,
-        color: colors[1],
-        popped: false,
-        value: "Did you make a wish and blow out the candles?",
-    },
-    {
-        id: 9,
-        x: 720,
-        y: 360,
-        width: 180,
-        height: 180 * 1.3,
-        color: colors[2],
-        popped: false,
-        value: "Cheers on your birthday!",
-    },
-    {
-        id: 10,
-        x: 950,
-        y: 200,
-        width: widthMid,
-        height: heightMid,
-        color: colors[3],
-        popped: false,
-        value: "Who is a birthday boy/girl today?",
-    },
-    {
-        id: 11,
-        x: 850,
-        y: 510,
-        width: 200,
-        height: 200 * 1.3,
-        color: colors[1],
-        popped: false,
-        value: "Who is a birthday boy/girl today?",
-    },
+const balloonList: Balloon[] = [
+    { id: 1, x: 20, y: 430, width: widthMid, height: heightMid, color: colors[4], popped: false, value: "Who is a birthday boy/girl today?" },
+    { id: 2, x: 100, y: 160, width: widthMid, height: heightMid, color: colors[0], popped: false, value: "Happy belated birthday!" },
+    { id: 3, x: 230, y: 620, width, height, color: colors[3], popped: false, value: "Enjoy the ride!" },
+    { id: 4, x: 290, y: 340, width: widthMid, height: heightMid, color: colors[1], popped: false, value: "Did you make a wish list?" },
+    { id: 5, x: 430, y: 110, width: widthBig, height: heightBig, color: colors[3], popped: false, value: "What present did you like the most?" },
+    { id: 6, x: 454, y: 610, width, height, color: colors[2], popped: false, value: "It’s your day to shine!" },
+    { id: 7, x: 540, y: 340, width: widthBig, height: heightBig, color: colors[0], popped: false, value: "Did you throw a birthday party?" },
+    { id: 8, x: 650, y: 120, width: widthBig, height: heightBig, color: colors[1], popped: false, value: "Did you make a wish and blow out the candles?" },
+    { id: 9, x: 720, y: 360, width: 180, height: 180 * 1.3, color: colors[2], popped: false, value: "Cheers on your birthday!" },
+    { id: 10, x: 950, y: 200, width: widthMid, height: heightMid, color: colors[3], popped: false, value: "Who is a birthday boy/girl today?" },
+    { id: 11, x: 850, y: 510, width: 200, height: 200 * 1.3, color: colors[1], popped: false, value: "Who is a birthday boy/girl today?" }
 ];
 
 export function Sharuk() {
-    const [balloons, setBalloons] = useState<Balloon[]>(balloonList);
+    const [balloons, setBalloons] = useState(balloonList);
+
+    const containerRef = useRef<HTMLDivElement>(null);
+    const [scale, setScale] = useState(1);
+
+    useEffect(() => {
+        const resize = () => {
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+
+            const scaleX = width / BASE_WIDTH;
+            const scaleY = height / BASE_HEIGHT;
+
+            setScale(Math.min(scaleX, scaleY));
+        };
+
+        resize();
+        window.addEventListener("resize", resize);
+
+        return () => window.removeEventListener("resize", resize);
+    }, []);
 
     const popBalloon = (id: number) => {
         setBalloons((prev) =>
-            prev.map((b) => (b.id === id ? { ...b, popped: true } : b)),
+            prev.map((b) => (b.id === id ? { ...b, popped: true } : b))
         );
     };
 
     return (
-        <div
-            style={{
+        <Box
+            ref={containerRef}
+            sx={{
                 backgroundColor: "#1c4d12",
+                width: "100%",
                 height: "100vh",
-                position: 'relative',
+                overflow: "hidden",
+                position: "relative"
             }}
         >
+            {/* Header */}
             <Stack
                 flexDirection={"row"}
-                gap={"180px"}
+                gap={{ xs: 4, md: 12 }}
                 alignItems={"center"}
                 justifyContent={"center"}
-
                 sx={{
                     position: "absolute",
-                    top: "62px",
+                    top: 18,
                     left: "50%",
-                    transform: "translate(-50%, -50%)",
+                    transform: "translateX(-50%)",
+                    zIndex: 10
                 }}
             >
                 <Typography
                     sx={{
-                        fontSize: "64px",
+                        fontSize: { xs: 32, md: 64 },
                         fontWeight: "bold",
                         color: "#dcd334",
-                        textAlign: "center",
-                        fontFamily: "Fantasy",
+                        fontFamily: "Fantasy"
                     }}
                 >
                     BIRTHDAY
                 </Typography>
+
                 <Typography
                     sx={{
-                        fontSize: "64px",
+                        fontSize: { xs: 32, md: 64 },
                         fontWeight: "bold",
                         color: "#dcd334",
-                        textAlign: "center",
-                        fontFamily: "Fantasy",
+                        fontFamily: "Fantasy"
                     }}
                 >
                     BALLOONS
                 </Typography>
             </Stack>
 
+            {/* Scene */}
             <Box
                 sx={{
-                    position: "relative",
-                    width: 1200,
-                    margin: "0 auto",
+                    width: BASE_WIDTH,
+                    height: BASE_HEIGHT,
+                    position: "absolute",
+                    left: "50%",
+                    top: "50%",
+                    transform: `translate(-50%, -50%) scale(${scale})`,
+                    transformOrigin: "center"
                 }}
             >
                 {/* Strings */}
                 <svg
-                    width="1200"
-                    height="100vh"
+                    width={BASE_WIDTH}
+                    height={BASE_HEIGHT}
                     style={{ position: "absolute", top: 0, left: 0 }}
                 >
                     {balloons.map(
@@ -242,10 +175,10 @@ export function Sharuk() {
                                     y1={startPoint.y}
                                     x2={b.x + b.width / 2}
                                     y2={b.y + b.height}
-                                    stroke={"#84a480"}
+                                    stroke="#84a480"
                                     strokeWidth="2"
                                 />
-                            ),
+                            )
                     )}
                 </svg>
 
@@ -253,17 +186,17 @@ export function Sharuk() {
                 {balloons.map((b) =>
                     b.popped ? (
                         <Typography
+                            key={b.id}
                             sx={{
                                 position: "absolute",
                                 left: b.x,
                                 top: b.y + b.height / 2,
                                 width: b.width,
-                                fontSize: "26px",
+                                fontSize: 26,
                                 fontWeight: "bold",
-                                color: `${b.color}`,
-                                lineHeight: "28px",
+                                color: b.color,
                                 textAlign: "center",
-                                zIndex: 1,
+                                zIndex: 1
                             }}
                         >
                             {b.value}
@@ -285,19 +218,19 @@ export function Sharuk() {
                                 background: `radial-gradient(circle at 30% 30%, white 5%, ${b.color} 40%, #00000033 100%)`,
 
                                 boxShadow: `
-                  inset -10px -20px 30px rgba(0,0,0,0.3),
-                  inset 10px 10px 20px rgba(255,255,255,0.6),
-                  0 10px 20px rgba(0,0,0,0.25)
-                `,
+                inset -10px -20px 30px rgba(0,0,0,0.3),
+                inset 10px 10px 20px rgba(255,255,255,0.6),
+                0 10px 20px rgba(0,0,0,0.25)
+              `,
 
                                 transition: "transform 0.2s",
 
                                 "&:hover": {
-                                    transform: "scale(1.05)",
-                                },
+                                    transform: "scale(1.05)"
+                                }
                             }}
                         />
-                    ),
+                    )
                 )}
 
                 {/* Knot */}
@@ -309,10 +242,10 @@ export function Sharuk() {
                         width: 10,
                         height: 10,
                         borderRadius: "50%",
-                        background: "#222",
+                        background: "#222"
                     }}
                 />
             </Box>
-        </div>
+        </Box>
     );
 }
