@@ -58,7 +58,7 @@ const widthBig = 180;
 const heightBig = widthBig * 1.3;
 
 const balloonList: Balloon[] = [
-    { id: 1, x: 20, y: 430, width: widthMid, height: heightMid, color: colors[4], popped: false, value: "Who is a birthday boy/girl today?" },
+    { id: 1, x: 20, y: 430, width: widthMid, height: heightMid, color: colors[4], popped: false, value: "What age are you turning?" },
     { id: 2, x: 100, y: 160, width: widthMid, height: heightMid, color: colors[0], popped: false, value: "Happy belated birthday!" },
     { id: 3, x: 230, y: 620, width, height, color: colors[3], popped: false, value: "Enjoy the ride!" },
     { id: 4, x: 290, y: 340, width: widthMid, height: heightMid, color: colors[1], popped: false, value: "Did you make a wish list?" },
@@ -101,14 +101,15 @@ export function Sharuk() {
     };
 
     return (
-        <Box
-
+        <Stack
             sx={{
                 backgroundColor: "#1c4d12",
                 width: "100%",
                 height: "100vh",
                 overflow: "hidden",
-                position: "relative"
+                position: "relative",
+                alignItems: "center",
+                justifyContent: "center",
             }}
         >
             {/* Header */}
@@ -249,6 +250,6 @@ export function Sharuk() {
                     }}
                 />
             </Box>
-        </Box>
+        </Stack>
     );
 }
