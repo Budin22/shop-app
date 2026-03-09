@@ -62,13 +62,13 @@ const balloonList: Balloon[] = [
     { id: 2, x: 100, y: 160, width: widthMid, height: heightMid, color: colors[0], popped: false, value: "Happy belated birthday!" },
     { id: 3, x: 230, y: 620, width, height, color: colors[3], popped: false, value: "Enjoy the ride!" },
     { id: 4, x: 290, y: 340, width: widthMid, height: heightMid, color: colors[1], popped: false, value: "Did you make a wish list?" },
-    { id: 5, x: 430, y: 110, width: widthBig, height: heightBig, color: colors[3], popped: false, value: "What present did you like the most?" },
+    { id: 5, x: 426, y: 130, width: widthBig, height: heightBig, color: colors[3], popped: false, value: "What present did you like the most?" },
     { id: 6, x: 454, y: 610, width, height, color: colors[2], popped: false, value: "It’s your day to shine!" },
     { id: 7, x: 540, y: 340, width: widthBig, height: heightBig, color: colors[0], popped: false, value: "Did you throw a birthday party?" },
-    { id: 8, x: 650, y: 120, width: widthBig, height: heightBig, color: colors[1], popped: false, value: "Did you make a wish and blow out the candles?" },
+    { id: 8, x: 642, y: 132, width: widthBig, height: heightBig, color: colors[1], popped: false, value: "Did you make a wish and blow out the candles?" },
     { id: 9, x: 720, y: 360, width: 180, height: 180 * 1.3, color: colors[2], popped: false, value: "Cheers on your birthday!" },
-    { id: 10, x: 950, y: 200, width: widthMid, height: heightMid, color: colors[3], popped: false, value: "Who is a birthday boy/girl today?" },
-    { id: 11, x: 850, y: 510, width: 200, height: 200 * 1.3, color: colors[1], popped: false, value: "Who is a birthday boy/girl today?" }
+    { id: 10, x: 860, y: 220, width: widthMid, height: heightMid, color: colors[3], popped: false, value: "Who is a birthday boy/girl today?" },
+    { id: 11, x: 850, y: 510, width: 200, height: 200 * 1.3, color: colors[0], popped: false, value: "Wishing you a year full of happiness and surprises!" }
 ];
 
 export function Sharuk() {
@@ -121,7 +121,7 @@ export function Sharuk() {
                 justifyContent={"center"}
                 sx={{
                     position: "absolute",
-                    top: 6,
+                    top: "4px",
                     left: "50%",
                     transform: "translateX(-50%)",
                     zIndex: 10
