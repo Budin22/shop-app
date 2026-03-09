@@ -8,47 +8,52 @@ import { ProductPage } from "./pages/ProductPage";
 import { OrderPage } from "./pages/OrderPage";
 import { OrderComplete } from "./components/OrderView/OrderComplete";
 import { ProfilePage } from "./pages/ProfilePage";
+import {Sharuk} from "./pages/Sharuk";
 
 export const routes: RouteObject[] = [
-  {
+  // {
+  //   path: "/",
+  //   element: <HomePage />,
+  // },
+  // {
+  //   path: "/products",
+  //   element: <ProductsPage />,
+  // },
+  // {
+  //   path: "/form",
+  //   element: <FormPage />,
+  // },
+  // {
+  //   path: "/about",
+  //   element: <AboutPage />,
+  // },
+  // {
+  //   path: "/cart",
+  //   element: <CartPage />,
+  // },
+  // {
+  //   path: "/order",
+  //   element: <OrderPage />,
+  // },
+  // {
+  //   path: "/order",
+  //   children: [
+  //     {
+  //       path: "done",
+  //       element: <OrderComplete />,
+  //     },
+  //   ],
+  // },
+  // {
+  //   path: "/product/:id",
+  //   element: <ProductPage />,
+  // },
+  // {
+  //   path: "/profile",
+  //   element: <ProfilePage />,
+  // },
+    {
     path: "/",
-    element: <HomePage />,
-  },
-  {
-    path: "/products",
-    element: <ProductsPage />,
-  },
-  {
-    path: "/form",
-    element: <FormPage />,
-  },
-  {
-    path: "/about",
-    element: <AboutPage />,
-  },
-  {
-    path: "/cart",
-    element: <CartPage />,
-  },
-  {
-    path: "/order",
-    element: <OrderPage />,
-  },
-  {
-    path: "/order",
-    children: [
-      {
-        path: "done",
-        element: <OrderComplete />,
-      },
-    ],
-  },
-  {
-    path: "/product/:id",
-    element: <ProductPage />,
-  },
-  {
-    path: "/profile",
-    element: <ProfilePage />,
+    element: <Sharuk />,
   },
 ];

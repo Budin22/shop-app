@@ -30,8 +30,9 @@ function App() {
   }, [dispatchAddAllProduct, dispatchSubmitForm, dispatchAddAllUsers]);
   return (
     <>
-      <Header />
-      <Container sx={{ paddingTop: 8 }}>{root}</Container>
+      {/*<Header />*/}
+      {/*<Container sx={{ paddingTop: 8 }}>{root}</Container>*/}
+        {root}
     </>
   );
 }
