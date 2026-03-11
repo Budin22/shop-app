@@ -194,7 +194,7 @@ export function Sharuk() {
                             sx={{
                                 position: "absolute",
                                 left: b.x,
-                                top: b.y + b.height / 2,
+                                top: b.y + b.height / 4,
                                 width: b.width,
                                 fontSize: 26,
                                 fontWeight: "bold",
